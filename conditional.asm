@@ -20,21 +20,21 @@ main:
     sll $t1, $t1, 2 # shift L by 2
     beq $t0, $t1, divisibleByFour  #campare with original if div by 4
 
-    li $t2, 7 #mult by 7
+    li $t2, 7 # mult by 7
     mult $t0, $t2
     mflo $t3
     j printOfRes
 
 divisibleByFour:
     li $t2, 4
-    mult $t0, $t2
+    mult $t0, $t2 #div by 4 => mult by 4
     mflo $t3
 
 printOfRes:
     move $a0, $t3
     li $v0, 1
-    syscall #this is for result printing
+    syscall #result printing
 
 exit:
-    li $v0, 10 # exit code
+    li $v0, 10 # syscall for exit code 10
     syscall 
