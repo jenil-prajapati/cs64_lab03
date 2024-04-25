@@ -1,47 +1,23 @@
 # arithmetic.asm
 # A simple calculator program in MIPS Assembly for CS64
-#
-
-.data
-    prompt1: .asciiz ""
-    prompt2: .asciiz ""
-
+# notes/to-do: use mips syscall table, undrstnd ref data, syntax, 
 .text
-.globl main
 main:
-    # Print prompt for the first number
-    li $v0, 4
-    la $a0, prompt1
+    
+    li $v0, 5 #for 1st int
     syscall
+    move $t0, $v0       # t0 = v0
     
-    # Read the first integer (x)
-    li $v0, 5
+    li $v0, 5 #for 2nd int
     syscall
-    move $t0, $v0       # Store x in $t0
+    move $t1, $v0       # t1 = v0
     
-    # Print prompt for the second number
-    li $v0, 4
-    la $a0, prompt2
-    syscall
+    sra $t2, $t1, 1     # t2 = y / 2
+    sub $t3, $t0, $t2   # t3 = x - (y / 2)
+    sll $t4, $t3, 5     # t4 = $t3 * 32
+    addi $t5, $t4, 4    # t5 = $t4 + 4
     
-    # Read the second integer (y)
-    li $v0, 5
-    syscall
-    move $t1, $v0       # Store y in $t1
-    
-    # Calculate y/2 using arithmetic right shift
-    sra $t2, $t1, 1     # $t2 = y / 2
-    
-    # Calculate x - (y/2)
-    sub $t3, $t0, $t2   # $t3 = x - (y / 2)
-    
-    # Calculate 32 * (x - (y/2)) using left shift
-    sll $t4, $t3, 5     # $t4 = $t3 * 32
-    
-    # Add 4 to the result
-    addi $t5, $t4, 4    # $t5 = $t4 + 4
-    
-    # Print the result
+    #print
     move $a0, $t5
     li $v0, 1
     syscall

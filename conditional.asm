@@ -7,42 +7,34 @@
 
 # Text Area (i.e. instructions)
 .text
-.globl main
 main:
-    # Print the prompt
-    li $v0, 4
-    la $a0, prompt
+    li $v0, 4 
+    la $a0, prompt # syscall for print_string 
     syscall
 
-    # Read the integer input
-    li $v0, 5
+    li $v0, 5 # syscall for read_int
     syscall
-    move $t0, $v0       # Store the input in $t0
+    move $t0, $v0 
 
-    # Check if the input is divisible by 4
-    # x % 4 == 0 can be checked by x & 3 == 0
-    andi $t1, $t0, 3
-    beqz $t1, divisible_by_four  # If $t1 == 0, go to divisible_by_four
+    srl $t1, $t0, 2 # shift R by 2
+    sll $t1, $t1, 2 # shift L by 2
+    beq $t0, $t1, divisibleByFour  #campare with original if div by 4
 
-    # If not divisible by 4, multiply input by 7
-    li $t2, 7
+    li $t2, 7 #mult by 7
     mult $t0, $t2
     mflo $t3
-    j print_result
+    j printOfRes
 
-divisible_by_four:
-    # If divisible by 4, multiply input by 4
+divisibleByFour:
     li $t2, 4
     mult $t0, $t2
     mflo $t3
 
-print_result:
-    # Print the result
+printOfRes:
     move $a0, $t3
     li $v0, 1
-    syscall
+    syscall #this is for result printing
 
 exit:
-    # Exit SPIM
-    li $v0, 10
-    syscall
+    li $v0, 10 # exit code
+    syscall 
